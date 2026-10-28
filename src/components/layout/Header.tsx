@@ -17,7 +17,9 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 export function Header() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-cream/90 backdrop-blur">

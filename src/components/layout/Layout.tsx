@@ -7,7 +7,9 @@ import { MobileActionBar } from "./MobileActionBar";
 
 export function Layout() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const onBooking = pathname.startsWith("/book");
 
   return (
