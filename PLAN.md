@@ -3,7 +3,7 @@
 A minimalist, easy-to-navigate site for **Paws & Claws Veterinary Care Sdn Bhd** (Kiulap, Bandar Seri Begawan, Brunei), with online booking added in a later phase.
 
 - **Stack:** React + TypeScript (Vite), Tailwind CSS, Supabase (Postgres, Auth, Storage, Edge Functions)
-- **Design reference:** the "Wag & Wash" booking screen (cream background, deep-teal primary, rounded cards, one clear call to action per screen)
+- **Design reference:** the "Wag & Wash" booking screen (cream background, brand-magenta primary from the logo, rounded cards, one clear call to action per screen)
 
 ---
 
@@ -57,11 +57,12 @@ Store photos in Supabase Storage (`public-assets` bucket) or `/public/images` fo
 
 | Token | Value (starting point) | Use |
 | --- | --- | --- |
-| `--bg` | `#F7F3EC` cream | Page background |
+| `--cream` | `#FAF5F1` | Page background |
 | `--surface` | `#FFFFFF` | Cards |
-| `--primary` | `#1F6B5C` deep teal | Buttons, selected states, links |
-| `--primary-soft` | `#E3F0EC` | Illustration backdrops, chips |
-| `--accent` | `#E8735A` coral | Small highlights, sparkles, rating star |
+| `--brand` | `#B34687` logo magenta (5.07:1 with white) | Buttons, selected states |
+| `--brand-dark` | `#95336F` | Hover, links on cream |
+| `--brand-soft` | `#F7E7F0` | Illustration backdrops, chips |
+| `--sun` | `#F2B544` | Small highlights, sparkles |
 | `--ink` | `#1E2A27` | Headings |
 | `--muted` | `#6B7470` | Body and secondary text |
 | `--border` | `#E7E1D6` | Card and pill outlines |

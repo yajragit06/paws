@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-cream: #faf5f1;
+  --color-surface: #ffffff;
+  --color-brand: #b34687;       /* from the logo */
+  --color-brand-dark: #95336f;  /* hover, links on cream */
+  --color-brand-soft: #f7e7f0;  /* illustration backdrops, chips */
+  --color-brand-tint: #fcf3f8;
+  --color-sun: #f2b544;         /* small highlights */
+  --color-ink: #2b1e26;
+  --color-muted: #6f6369;
+  --color-line: #ede2e6;
+
+  --shadow-card: 0 1px 2px rgb(43 30 38 / 0.04), 0 8px 24px rgb(43 30 38 / 0.06);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+@utility card {
+  @apply rounded-[20px] border border-line bg-surface shadow-card;
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
