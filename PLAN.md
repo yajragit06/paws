@@ -1,6 +1,6 @@
 # Paws & Claws — Website Plan
 
-A minimalist, easy-to-navigate site for **Paws & Claws Veterinary Care**, with online booking added in a later phase.
+A minimalist, easy-to-navigate site for **Paws & Claws Veterinary Care Sdn Bhd** (Kiulap, Bandar Seri Begawan, Brunei), with online booking added in a later phase.
 
 - **Stack:** React + TypeScript (Vite), Tailwind CSS, Supabase (Postgres, Auth, Storage, Edge Functions)
 - **Design reference:** the "Wag & Wash" booking screen (cream background, deep-teal primary, rounded cards, one clear call to action per screen)
@@ -19,7 +19,7 @@ Non-goals for v1: online shop, telemedicine, a multi-branch setup.
 
 ## 2. Assets and content
 
-The Google Business Profile link could not be fetched from this environment (`business.google.com` is blocked by the session's network policy). Before the content pass, collect these from the profile or from the clinic:
+The Google Business Profile and Instagram could not be fetched from this environment (blocked by the session's network policy). Before the content pass, collect these from the profile or from the clinic:
 
 | Item | Source | Used on |
 | --- | --- | --- |
@@ -32,7 +32,20 @@ The Google Business Profile link could not be fetched from this environment (`bu
 | Rating and review count, 3–6 short reviews (with permission) | GBP | Home "trust" strip |
 | Vet names, photos and credentials | Clinic | About / Team |
 
-A web search turned up a *Paws & Claws Animal Clinic* in Lutong, Miri, Sarawak (Dr. Lee Mei Kim and Dr. Felix). **Confirm with the clinic that this is the same business before using any of that detail.**
+**Known details (Brunei)**, from public listings. Please verify each with the clinic before launch:
+
+| | |
+| --- | --- |
+| Name | Paws & Claws Veterinary Care Sdn Bhd |
+| Address | No. 2, Spg 127-21, Kg Kiulap, Bandar Seri Begawan, Brunei-Muara |
+| Phone | +673 744 2000 |
+| Email | admin@pawsclawsveterinary.com |
+| Hours (listed) | Most days 8:30 AM – 10 PM; Friday 8:30 AM – 12 PM and 2 – 10 PM |
+| Services (listed) | Consultation, preventive care, surgery, critical care, supplements & accessories retail |
+| Rating | about 4.7 from several hundred reviews |
+| Social | Instagram [@pawsnclaws.bn](https://www.instagram.com/pawsnclaws.bn/), Facebook [pawsnclawsbn](https://www.facebook.com/pawsnclawsbn/) |
+
+Brand voice from the Facebook page: *"comprehensive and exceptional care… from preventative to critical care."* Pull the logo, photos and current post styling from the Instagram account.
 
 Store photos in Supabase Storage (`public-assets` bucket) or `/public/images` for static ones. Export them as WebP at 1x/2x sizes.
 
@@ -83,7 +96,7 @@ Keep the top nav to **four items + one CTA**, matching the reference header (`Bo
 ### Home page sections (top to bottom)
 1. Hero: one line ("Gentle care for every paw and claw"), a short subline, **Book a visit** and **Call us**, and a clinic photo or illustration on a soft teal card.
 2. Quick facts strip: rating ★ 4.x (N reviews) · open today until X · location.
-3. Services: 4–6 cards (icon, name, "from RM__"), each linking to booking with that service preselected.
+3. Services: 4–6 cards (icon, name, "from B$__"), each linking to booking with that service preselected.
 4. Why us: 3 short points (experienced vets, modern equipment, fear-free handling).
 5. Reviews: 3 cards.
 6. Visit us: map embed, hours table, directions button.
@@ -98,7 +111,7 @@ Keep the top nav to **four items + one CTA**, matching the reference header (`Bo
 3. **Day:** horizontal scroll of the next 14 open days. Closed days are greyed out.
 4. **Time:** the slots available for that service's duration, with an "N slots left" hint.
 5. **Details:** owner name, phone and email. Magic-link sign-in is offered but not required.
-6. **Confirm:** summary card (service, duration, price, deposit), then a **Book · RM__ deposit** button (or just **Confirm booking** if deposits are off).
+6. **Confirm:** summary card (service, duration, price, deposit), then a **Book · B$__ deposit** button (or just **Confirm booking** if deposits are off).
 7. **Done:** confirmation screen, an email/WhatsApp message, and "Add to calendar" (.ics).
 
 The reassurance line under the button states the cancellation policy.
@@ -125,12 +138,12 @@ profiles      (id → auth.users, full_name, phone, role enum('owner','staff','a
 - **Notifications:** an Edge Function triggered on booking insert or update sends email (Resend) and optionally WhatsApp, plus a reminder 24h before via `pg_cron`.
 
 ### Payments (decision needed)
-The reference shows a deposit. Options for Malaysia:
-- **Stripe** (cards + FPX): best developer experience, works from Supabase Edge Functions with webhooks.
-- **Billplz / ToyyibPay**: cheaper local FPX, simpler integration.
+The reference shows a deposit. Options for Brunei (currency BND):
+- **Local bank gateway** (BIBD, Baiduri or another local acquirer): accepts local cards and bank transfers, but needs a merchant account and the bank's integration docs.
+- **International gateway that accepts Brunei merchants** (check current country support; Stripe does not onboard Brunei businesses directly).
 - **No deposit at launch**: confirm by WhatsApp. This is the fastest to ship and can be added later without schema changes.
 
-Recommendation: launch without deposits and add Stripe (FPX + card) once no-shows are measured.
+Recommendation: launch without deposits and add a local gateway once no-shows are measured.
 
 ---
 
@@ -153,7 +166,7 @@ src/
     ui/           Button, Card, Chip, Badge, Sheet, Input, Skeleton
     booking/      ServicePicker, PetChip, DayPicker, TimeSlots, SummaryCard
     layout/       Header, Footer, MobileActionBar
-  lib/            supabase.ts, format.ts (RM, dates in Asia/Kuala_Lumpur), seo.ts
+  lib/            supabase.ts, format.ts (B$/BND, dates in Asia/Brunei), seo.ts
   hooks/          useServices, useSlots, useBookings
   types/          database.ts (generated by `supabase gen types typescript`)
 supabase/
@@ -176,14 +189,14 @@ supabase/
 | 3 | **Booking MVP** | Schema + RLS + slot function, `/book` flow, guest booking, confirmation email, `/my-bookings` with cancel |
 | 4 | **Admin** | Staff dashboard, hours/closures editor, service editor |
 | 5 | **Polish & launch** | Lighthouse ≥ 95 on mobile, accessibility pass, analytics (Plausible/GA4), deploy (Vercel/Netlify) + custom domain, link the site from the Google Business Profile |
-| 6 | **Optional** | Deposits (Stripe FPX), WhatsApp reminders, Bahasa Malaysia / 中文 translations |
+| 6 | **Optional** | Deposits (local gateway), WhatsApp reminders, Bahasa Melayu / 中文 translations |
 
 ---
 
 ## 9. Quality checklist
 
 - Works at 360px width with no horizontal scroll; the primary CTA is always reachable.
-- All times stored as UTC and displayed in `Asia/Kuala_Lumpur`.
+- All times stored as UTC and displayed in `Asia/Brunei` (UTC+8).
 - Slot availability is re-checked server-side at submit time, with a friendly "that slot was just taken" message.
 - Loading skeletons instead of spinners; empty and error states for every list.
 - Unit tests for slot generation; one Playwright end-to-end test of the booking flow.
@@ -197,5 +210,5 @@ supabase/
 2. Final services list, durations and prices (consultation, vaccination, grooming, dental, surgery consult, boarding?)
 3. Deposit at launch: yes or no? What is the cancellation policy?
 4. Do you want WhatsApp as the main contact channel?
-5. Which languages: English only, or also BM / Chinese?
+5. Which languages: English only, or also Bahasa Melayu / Chinese?
 6. Domain name and who owns it?
