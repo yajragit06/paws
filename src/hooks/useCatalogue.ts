@@ -60,9 +60,10 @@ export function CatalogueProvider({ children }: { children: ReactNode }) {
         (hours[weekday] ??= []).push([opens.slice(0, 5), closes.slice(0, 5)]);
       }
 
+      // An empty table means the seed hasn't been run yet; keep the built-in data.
       setCatalogue({
-        services,
-        hours,
+        services: services.some((s) => s.bookable) ? services : fallback.services,
+        hours: Object.keys(hours).length ? hours : fallback.hours,
         closures: (cls.data ?? []).map((c: { day: string }) => c.day),
         capacity: settings.data?.capacity ?? fallback.capacity,
         leadMin: settings.data?.lead_minutes ?? fallback.leadMin,

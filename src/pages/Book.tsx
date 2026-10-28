@@ -1,7 +1,7 @@
 import { CalendarPlus, Check, CircleCheck, MapPin, MessageCircle, PawPrint, Phone } from "lucide-react";
 import { useMemo, useState, type ComponentProps, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { clinic } from "../data/clinic";
+import { bookableServices, clinic } from "../data/clinic";
 import { useBookedRanges } from "../hooks/useBookedRanges";
 import { useCatalogue } from "../hooks/useCatalogue";
 import { formatDuration, formatLongDate, formatPrice, formatTime } from "../lib/format";
@@ -29,7 +29,7 @@ export default function Book() {
   const { services, hours, closures, capacity, leadMin } = useCatalogue();
   const bookable = services.filter((s) => s.bookable);
   const [params, setParams] = useSearchParams();
-  const service = bookable.find((s) => s.slug === params.get("service")) ?? bookable[0];
+  const service = bookable.find((s) => s.slug === params.get("service")) ?? bookable[0] ?? bookableServices[0];
 
   const now = useMemo(() => new Date(), []);
   const days = useMemo(() => upcomingOpenDays(hours, now, 14, closures), [hours, now, closures]);
